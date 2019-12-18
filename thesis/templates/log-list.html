@@ -1,0 +1,195 @@
+{% extends 'basic.html' %}
+{% import 'page-macro.html' as pg %}
+{% block title %}日志列表{% endblock %}
+{% block log %}class="active"{% endblock %}
+{% block css %}
+    <!-- DataTables -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='adminLTE/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css') }}">
+    <!-- iCheck for checkboxes and radio inputs -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='adminLTE/plugins/iCheck/all.css') }}">
+{% endblock %}
+{% block body %}
+
+    {% if session['is_admin'] == '1' %}
+        <!-- 主要内容. 包含页面内容 -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <h1>日志列表
+                    <small></small>
+                </h1>
+                <ol class="breadcrumb">
+                    <li><a href="{{ url_for('index') }}"><i class="fa fa-dashboard"></i> 主页</a></li>
+                    <li class="active">所有日志</li>
+                </ol>
+            </section>
+            <!-- Main content -->
+            <section class="content">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <!-- 删除操作提示框 -->
+                        {% for msg in get_flashed_messages() %}
+                            <div class="alert alert-success alert-dismissible">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                                    <i class="fa fa-times"></i>
+                                </button>
+                                <h4><i class="icon fa fa-warning"></i> 操作提示：</h4>
+                                <h4>{{ msg }}</h4>
+                            </div>
+                            <!-- /.box -->
+                        {% endfor %}
+                        <!-- /. 删除操作提示框 -->
+                        <div class="box">
+                            <div class="box-body">
+                                <form role="form" method="post" action="{{ url_for('log_del') }}">
+                                    <div class="pull-right mailbox-controls">
+                                        <div class="mailbox-controls">
+                                            <button type="button" class="btn btn-default btn-sm checkbox-toggle">
+                                                <i class="fa fa-square-o">全(不)选</i>
+                                            </button>
+                                            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
+                                                    data-target="#myModal">删除
+                                            </button>
+
+                                            <!-- 删除提示 Modal -->
+                                            <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+                                                 aria-labelledby="myModalLabel">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                            <h4 class="modal-title" id="myModalLabel">操作提示</h4>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            确认删除？<i class="glyphicon glyphicon-alert"></i> 注意：此操作不可逆
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">
+                                                                取消
+                                                            </button>
+                                                            <button type="submit" class="btn btn-primary">确认删除</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="pull-left">
+                                        <h4 style="font-size: 15px;">日志总数：<a class="text-light-blue">{{ count }}</a> 条。</h4>
+                                    </div>
+                                    <table id="example1" class="table table-bordered table-hover table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>用户</th>
+                                            <th>IP</th>
+                                            <th>操作事项</th>
+                                            <th>时间</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for l in log.items %}
+                                            <tr>
+                                                <td>{{ l.id }}</td>
+                                                <td>{{ l.user.name }}</td>
+                                                <td>{{ l.ip }}</td>
+                                                <td>{{ l.reason }}</td>
+                                                <td>{{ l.add_time }}</td>
+                                                <td>
+                                                    <div class="table-responsive mailbox-messages">
+                                                        <input type="checkbox" value="{{ l.id }}" name="ldid">
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </form>
+                            </div>
+                            <!-- /.box-body -->
+                            <div class="box-footer clearfix">
+                                <ul class="pagination pagination-sm no-margin pull-right">
+                                    {{ pg.page(log,'log_list') }}
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- /.box -->
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+            </section>
+            <!-- /.content -->
+        </div>
+        <!-- /.主要内容 -->
+    {% else %}
+        <script>location.href = '{{ url_for('forbidden') }}';</script>{% endif %}
+
+{% endblock %}
+{% block js %}
+    <!-- 数据js表 -->
+    <!-- 修改js中的文字或内容在jquery.dataTables.min.js文件中 -->
+    <script src="{{ url_for('static', filename='adminLTE/bower_components/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='adminLTE/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js') }}"></script>
+    <!-- iCheck 1.0.1 -->
+    <script src="{{ url_for('static', filename='adminLTE/plugins/iCheck/icheck.min.js') }}"></script>
+    <!-- 页面Script -->
+    <script>
+        document.write(unescape('%20%20%20%20%3Cscript%3E%0A%20%20%20%20%20%20%20%20%24%28function%20%28%29%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20//Initialize%20Select2%20Elements%0A%20%20%20%20%20%20%20%20%20%20%20%20%24%28%27.select2%27%29.select2%28%29%3B%0A%0A%20%20%20%20%20%20%20%20%20%20%20%20//Datemask%20dd/mm/yyyy%0A%20%20%20%20%20%20%20%20%20%20%20%20%24%28%27%23datemask%27%29.inputmask%28%27dd/mm/yyyy%27%2C%20%7B%27placeholder%27%3A%20%27dd/mm/yyyy%27%7D%29%0A%20%20%20%20%20%20%20%20%20%20%20%20//Datemask2%20mm/dd/yyyy%0A%20%20%20%20%20%20%20%20%20%20%20%20%24%28%27%23datemask2%27%29.inputmask%28%27mm/dd/yyyy%27%2C%20%7B%27placeholder%27%3A%20%27mm/dd/yyyy%27%7D%29%0A%20%20%20%20%20%20%20%20%20%20%20%20//Money%20Euro%0A%20%20%20%20%20%20%20%20%20%20%20%20%24%28%27%5Bdata-mask%5D%27%29.inputmask%28%29%3B%0A%0A%20%20%20%20%20%20%20%20%20%20%20%20//Date%20range%20picker%0A%20%20%20%20%20%20%20%20%20%20%20%20%24%28%27%23reservation%27%29.daterangepicker%28%29%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20//Date%20range%20picker%20with%20time%20picker%0A%20%20%20%20%20%20%20%20%20%20%20%20%24%28%27%23reservationtime%27%29.daterangepicker%28%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20timePicker%3A%20true%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20timePickerIncrement%3A%2030%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20locale%3A%20%7Bformat%3A%20%27MM/DD/YYYY%20hh%3Amm%20A%27%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%29%0A%20%20%20%20%20%20%20%20%20%20%20%20//Date%20range%20as%20a%20button%0A%20%20%20%20%20%20%20%20%20%20%20%20%24%28%27%23daterange-btn%27%29.daterangepicker%28%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20ranges%3A%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%27Today%27%3A%20%5Bmoment%28%29%2C%20moment%28%29%5D%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%27Yesterday%27%3A%20%5Bmoment%28%29.subtract%281%2C%20%27days%27%29%2C%20moment%28%29.subtract%281%2C%20%27days%27%29%5D%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%27Last%207%20Days%27%3A%20%5Bmoment%28%29.subtract%286%2C%20%27days%27%29%2C%20moment%28%29%5D%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%27Last%2030%20Days%27%3A%20%5Bmoment%28%29.subtract%2829%2C%20%27days%27%29%2C%20moment%28%29%5D%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%27This%20Month%27%3A%20%5Bmoment%28%29.startOf%28%27month%27%29%2C%20moment%28%29.endOf%28%27month%27%29%5D%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%27Last%20Month%27%3A%20%5Bmoment%28%29.subtract%281%2C%20%27month%27%29.startOf%28%27month%27%29%2C%20moment%28%29.subtract%281%2C%20%27month%27%29.endOf%28%27month%27%29%5D%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7D%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20startDate%3A%20moment%28%29.subtract%2829%2C%20%27days%27%29%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20endDate%3A%20moment%28%29%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7D%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20function%20%28start%2C%20end%29%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%24%28%27%23daterange-btn%20span%27%29.html%28start.format%28%27MMMM%20D%2C%20YYYY%27%29%20+%20%27%20-%20%27%20+%20end.format%28%27MMMM%20D%2C%20YYYY%27%29%29%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20%29%0A%0A%20%20%20%20%20%20%20%20%20%20%20%20//Date%20picker%0A%20%20%20%20%20%20%20%20%20%20%20%20%24%28%27%23datepicker%27%29.datepicker%28%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20autoclose%3A%20true%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%29%0A%0A%20%20%20%20%20%20%20%20%20%20%20%20//iCheck%20for%20checkbox%20and%20radio%20inputs%0A%20%20%20%20%20%20%20%20%20%20%20%20%24%28%27input%5Btype%3D%22checkbox%22%5D.minimal%2C%20input%5Btype%3D%22radio%22%5D.minimal%27%29.iCheck%28%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20checkboxClass%3A%20%27icheckbox_minimal-blue%27%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20radioClass%3A%20%27iradio_minimal-blue%27%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%29%0A%20%20%20%20%20%20%20%20%20%20%20%20//Red%20color%20scheme%20for%20iCheck%0A%20%20%20%20%20%20%20%20%20%20%20%20%24%28%27input%5Btype%3D%22checkbox%22%5D.minimal-red%2C%20input%5Btype%3D%22radio%22%5D.minimal-red%27%29.iCheck%28%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20checkboxClass%3A%20%27icheckbox_minimal-red%27%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20radioClass%3A%20%27iradio_minimal-red%27%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%29%0A%20%20%20%20%20%20%20%20%20%20%20%20//Flat%20red%20color%20scheme%20for%20iCheck%0A%20%20%20%20%20%20%20%20%20%20%20%20%24%28%27input%5Btype%3D%22checkbox%22%5D.flat-red%2C%20input%5Btype%3D%22radio%22%5D.flat-red%27%29.iCheck%28%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20checkboxClass%3A%20%27icheckbox_flat-green%27%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20radioClass%3A%20%27iradio_flat-green%27%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%29%0A%0A%20%20%20%20%20%20%20%20%20%20%20%20//Colorpicker%0A%20%20%20%20%20%20%20%20%20%20%20%20%24%28%27.my-colorpicker1%27%29.colorpicker%28%29%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20//color%20picker%20with%20addon%0A%20%20%20%20%20%20%20%20%20%20%20%20%24%28%27.my-colorpicker2%27%29.colorpicker%28%29%3B%0A%0A%20%20%20%20%20%20%20%20%20%20%20%20//Timepicker%0A%20%20%20%20%20%20%20%20%20%20%20%20%24%28%27.timepicker%27%29.timepicker%28%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20showInputs%3A%20false%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%29%0A%20%20%20%20%20%20%20%20%7D%29%0A%20%20%20%20%3C/script%3E'));
+    </script>
+    <!-- 多选框全选/不选 -->
+    <script>
+        $(function () {
+            //Enable iCheck plugin for checkboxes
+            //iCheck for checkbox and radio inputs
+            $('.mailbox-messages input[type="checkbox"]').iCheck({
+                checkboxClass: 'icheckbox_flat-blue',
+                radioClass: 'iradio_flat-blue'
+            });
+
+            //Enable check and uncheck all functionality
+            $(".checkbox-toggle").click(function () {
+                var clicks = $(this).data('clicks');
+                if (clicks) {
+                    //Uncheck all checkboxes
+                    $(".mailbox-messages input[type='checkbox']").iCheck("uncheck");
+                    $(".fa", this).removeClass("fa-check-square-o").addClass('fa-square-o');
+                } else {
+                    //Check all checkboxes
+                    $(".mailbox-messages input[type='checkbox']").iCheck("check");
+                    $(".fa", this).removeClass("fa-square-o").addClass('fa-check-square-o');
+                }
+                $(this).data("clicks", !clicks);
+            });
+
+            //Handle starring for glyphicon and font awesome
+            $(".mailbox-star").click(function (e) {
+                e.preventDefault();
+                //detect type
+                var $this = $(this).find("a > i");
+                var glyph = $this.hasClass("glyphicon");
+                var fa = $this.hasClass("fa");
+
+                //Switch states
+                if (glyph) {
+                    $this.toggleClass("glyphicon-star");
+                    $this.toggleClass("glyphicon-star-empty");
+                }
+
+                if (fa) {
+                    $this.toggleClass("fa-star");
+                    $this.toggleClass("fa-star-o");
+                }
+            });
+        });
+    </script>
+    <!-- 输入框 -->
+    <script src="{{ url_for('static', filename='adminLTE/plugins/input-mask/jquery.inputmask.js') }}"></script>
+    <script src="{{ url_for('static', filename='adminLTE/plugins/input-mask/jquery.inputmask.date.extensions.js') }}"></script>
+    <script src="{{ url_for('static', filename='adminLTE/plugins/input-mask/jquery.inputmask.extensions.js') }}"></script>
+{% endblock %}

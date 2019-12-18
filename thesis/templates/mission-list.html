@@ -1,0 +1,133 @@
+{% extends 'basic.html' %}
+{% block title %}新增用户{% endblock %}
+{% block mission %}active{% endblock %}
+{% block m3 %}class="active"{% endblock %}
+{% block css %}
+    <!-- DataTables -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='adminLTE/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css') }}">
+{% endblock %}
+{% block body %}
+    {% if session['is_admin'] == '1' %}
+        <!-- 主要内容. 包含页面内容 -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <h1>任务列表
+                    <small>advanced tables</small>
+                </h1>
+                <ol class="breadcrumb">
+                    <li><a href="{{ url_for('index') }}"><i class="fa fa-dashboard"></i> 主页</a></li>
+                    <li><a href="#">任务设置</a></li>
+                    <li class="active">所有任务列表</li>
+                </ol>
+            </section>
+            <!-- Main content -->
+            <section class="content">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <!-- 删除操作提示框 -->
+                        {% for msg in get_flashed_messages() %}
+                            <div class="alert alert-success alert-dismissible">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                                    <i class="fa fa-times"></i>
+                                </button>
+                                <h4><i class="icon fa fa-check"></i> 操作成功！</h4>
+                                <h4>{{ msg }}</h4>
+                            </div>
+                            <!-- /.box -->
+                        {% endfor %}
+                        <!-- /. 删除操作提示框 -->
+                        <div class="box">
+                            <div class="box-header">
+                                <h3 class="box-title text-light-blue">
+                                    当前任务数：<a class="text-black">{{ count }} </a>；
+                                    其中：<a class="text-black"></a>
+                                </h3>
+                            </div>
+                            <!-- /.box-header -->
+                            <div class="box-body">
+                                <table id="example1" class="table table-bordered table-hover table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>姓名</th>
+                                        <th>类型</th>
+                                        <th>专业</th>
+                                        <th>省份</th>
+                                        <th>开始时间</th>
+                                        <th>结束时间</th>
+                                        <th>任务数量</th>
+                                        <th>已完成</th>
+                                        <th>进度</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for v in mis %}
+                                        <tr>
+                                            <td>{{ v.user }}</td>
+                                            <td>{{ v.type }}</td>
+                                            <td>{{ v.major }}</td>
+                                            <td>{{ v.province }}</td>
+                                            <td>{{ v.begin_time }}</td>
+                                            <td>{% if v.end_time == none %}{% else %}{{ v.end_time }}{% endif %}</td>
+                                            <td>{{ v.quantity }}</td>
+                                            <td>{{ v.completed }}</td>
+                                            <td>
+                                                <div class="progress progress-xs progress-striped active">
+                                                    <div class="progress-bar progress-bar-primary"
+                                                         style="width: {% if v.completed or v.quantity !='0' %}
+                                                             {{ v.completed|int/v.quantity|int*100 }}%
+                                                         {% else %}0%{% endif %}">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <a href="{{ url_for('mission_reset', mid=v.id) }}" data-toggle="tooltip">
+                                                    <span class="label label-success">设置</span>
+                                                </a>
+                                                <a href="{{ url_for('mission_del', mdid=v.id) }}" data-toggle="tooltip"
+                                                            onclick="{if(confirm('确认删除？')){this.document.formname.submit();
+                                                            return true;}return false;}">
+                                                    <span class="label label-danger">删除</span>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.box-body -->
+                        </div>
+                        <!-- /.box -->
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+            </section>
+            <!-- /.content -->
+        </div>
+        <!-- /.主要内容 -->
+    {% else %}
+        <script>location.href = '{{ url_for('forbidden') }}';</script>{% endif %}
+
+{% endblock %}
+{% block js %}
+    <!-- DataTables -->
+    <!-- 修改js中的文字或内容在jquery.dataTables.min.js中 -->
+    <script src="{{ url_for('static', filename='adminLTE/bower_components/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='adminLTE/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js') }}"></script>
+    <script>
+        $(function () {
+            $('#example1').DataTable()
+            $('#example2').DataTable({
+                'paging': true,
+                'lengthChange': false,
+                'searching': false,
+                'ordering': true,
+                'info': true,
+                'autoWidth': false
+            })
+        })
+    </script>
+{% endblock %}

@@ -1,0 +1,93 @@
+{#{% extends 'basic.html' %}#}
+{#{% block title %}导入{% endblock %}#}
+{#{% block import_export %}active{% endblock %}#}
+{#{% block i1 %}class="active"{% endblock %}#}
+{#{% block css %}{% endblock %}#}
+{#{% block body %}{% endblock %}#}
+{#{% block js %}{% endblock %}#}
+{% extends 'basic.html' %}
+{% block title %}导入{% endblock %}
+{% block import_export %}active{% endblock %}
+{% block i1 %}class="active"{% endblock %}
+{% block css %}{% endblock %}
+{% block body %}
+
+    <!-- 页面. 页面内容 -->
+    <div class="content-wrapper">
+        <section class="content-header">
+            <h1>导入数据
+                <small>Preview</small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="{{ url_for('index') }}"><i class="fa fa-dashboard"></i> 首页</a></li>
+                <li>导入导出</li>
+                <li class="active">EXCEL 导入</li>
+            </ol>
+        </section>
+
+        <!-- 主要内容 -->
+        <section class="content">
+            <div class="row">
+                <form role="form" method="post" action="" enctype="multipart/form-data">
+                    <div class="col-md-12">
+                        <!-- 删除操作提示框 -->
+                        {% for msg in get_flashed_messages() %}
+                            <div class="alert alert-success alert-dismissible">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                                    <i class="fa fa-times"></i>
+                                </button>
+                                <h4><i class="icon fa fa-warning"></i> 操作提示：</h4>
+                                <h4>{{ msg }}</h4>
+                            </div>
+                            <!-- /.box -->
+                        {% endfor %}
+                        <!-- /. 删除操作提示框 -->
+                        <!-- 导入专业 -->
+                        <div class="col-md-4">
+                            <div class="box box-primary">
+                                <!-- 标题 -->
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">导入专业列表</h3>
+                                </div>
+                                <!-- 表单 -->
+                                <div class="box-body">
+                                    <div class="form-group">
+                                        <label for="InputFile">导 入 文 件 </label>
+                                        <input type="file" id="InputFile" name="file-upload" class="filename">
+                                    </div>
+                                </div>
+                                <div class="box-footer">
+                                    <button type="submit" class="btn btn-primary" name="major"> 确认提交</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 导入学生信息 -->
+                        <div class="col-md-4">
+                            <div class="box box-primary">
+                                <!-- 标题 -->
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">导入学生列表</h3>
+                                </div>
+                                <!-- 表单 -->
+                                <div class="box-body">
+                                    <div class="form-group">
+                                        <label for="InputFile">导 入 文 件 </label>
+                                        <input type="file" id="InputFile" name="file-upload-student" class="filename">
+                                    </div>
+                                </div>
+                                <div class="box-footer">
+                                    <button type="submit" class="btn btn-primary" name="student"> 确认提交</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </div>
+
+{% endblock %}
+{% block js %}
+
+
+{% endblock %}

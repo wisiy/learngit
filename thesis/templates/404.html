@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <title>404 | SUMC. Admission Office.</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='adminLTE/dist/css/AdminLTE.min.css') }}">
+    <link href="{{ url_for('static',filename='404/404.css') }}" rel="stylesheet" type="text/css">
+</head>
+<body>
+<!-- main content -->
+<div class="fullScreen" id="fullScreen">
+    <img class="rotating" src="{{ url_for('static',filename='404/spaceman.svg') }}" alt="#">
+    <div class="pagenotfound-text">
+        <h1>页面迷失在了太空深处。。。</h1>
+        <h2>检查你的访问地址，联系管理员或者
+            <a href="{{ url_for('index') }}" class="text-light-blue" style="text-decoration-line: underline">返回首页</a>
+        </h2>
+    </div>
+    <canvas id="canvas2d"></canvas>
+</div>
+<script type="text/javascript" src="{{ url_for('static',filename='404/404.js') }}"></script>
+<!-- ./main content -->
+</body>
+</html>

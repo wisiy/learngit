@@ -1,0 +1,114 @@
+{% extends 'basic.html' %}
+{% block title %}学生{% endblock %}
+{% block css %}
+    <!-- DataTables -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='adminLTE/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css') }}">
+{% endblock %}
+{% block body %}
+
+        {% if session['name'] in mis.user %}
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>学生列表
+                <small>advanced tables</small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="{{ url_for('index') }}"><i class="fa fa-dashboard"></i> 主页</a></li>
+                <li><a href="#">搜索学生</a></li>
+                <li class="active">学生列表</li>
+            </ol>
+        </section>
+        <!-- Main content -->
+        <section class="content">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box">
+                        <div class="box-header">
+                            <h3 class="box-title text-light-blue">
+                                当前查询到的记录总数：<a class="text-black">{{ count }}</a>；
+                                <a class="text-black"></a>
+                            </h3>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <table id="example1" class="table table-bordered table-hover table-striped">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>姓名</th>
+                                    <th>性别</th>
+                                    <th>身份证号</th>
+                                    <th>考生号</th>
+                                    <th>报考号</th>
+                                    <th>省份</th>
+                                    <th>专业</th>
+                                    <th>得分</th>
+                                    <th>状态</th>
+                                    <th>修改时间</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for s in data %}
+                                    <tr>
+                                        <td><a href="{{ url_for('student_info', sid=s.id) }}">{{ s.id }}</a></td>
+                                        <td><a href="{{ url_for('student_info', sid=s.id) }}">{{ s.name }}</a></td>
+                                        <td>{% if s.sex=='2' %}女{% elif s.sex=='1' %}男{% else %}{% endif %}</td>
+                                        <td><a href="{{ url_for('student_info', sid=s.id) }}">{{ s.id_number }}</a></td>
+                                        <td>{{ s.examinee_number }}</td>
+                                        <td>{{ s.registration_number }}</td>
+                                        <td>{{ s.province.name }}</td>
+                                        <td>{{ s.major.name_major }}</td>
+                                        <td>{{ s.final_score }}</td>
+                                        <td>
+                                            {% if s.input == none and s.checker == none %}
+                                                待输机
+                                            {% elif s.input == none and s.checker != none %}
+                                                待输机但已复查
+                                            {% elif s.input != none and s.checker == none %}
+                                                待复查
+                                            {% else %}
+                                                已完成
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ s.add_time }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                    <!-- /.box -->
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+        {% else %}<script>location.href='{{ url_for('forbidden') }}';</script>{% endif %}
+
+{% endblock %}
+{% block js %}
+    <!-- DataTables -->
+    <!-- 修改js中的文字或内容在jquery.dataTables.min.js中 -->
+    <script src="{{ url_for('static', filename='adminLTE/bower_components/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='adminLTE/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js') }}"></script>
+    <script>
+        $(function () {
+            $('#example1').DataTable()
+            $('#example2').DataTable({
+                'paging': true,
+                'lengthChange': false,
+                'searching': false,
+                'ordering': true,
+                'info': true,
+                'autoWidth': false
+            })
+        })
+    </script>
+{% endblock %}

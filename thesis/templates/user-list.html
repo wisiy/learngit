@@ -1,0 +1,134 @@
+{% extends 'basic.html' %}
+{% block title %}用户列表{% endblock %}
+{% block user_setting %}active{% endblock %}
+{% block reset_user %}class="active"{% endblock %}
+{% block css %}
+    <!-- DataTables -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='adminLTE/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css') }}">
+{% endblock %}
+{% block body %}
+
+    {% if session['can_add'] == '1' %}
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>用户列表
+                <small>advanced tables</small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="{{ url_for('index') }}"><i class="fa fa-dashboard"></i> 主页</a></li>
+                <li><a href="#">用户设置</a></li>
+                <li class="active">所有用户列表</li>
+            </ol>
+        </section>
+        <!-- Main content -->
+        <section class="content">
+            <div class="row">
+                <div class="col-xs-12">
+                    <!-- 删除操作提示框 -->
+                    {% for msg in get_flashed_messages() %}
+                        <div class="alert alert-success alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                                <i class="fa fa-times"></i>
+                            </button>
+                            <h4><i class="icon fa fa-check"></i> 操作成功</h4>
+                            {{ msg }}
+                        </div>
+                        <!-- /.box -->
+                    {% endfor %}
+                    <!-- /. 删除操作提示框 -->
+                    <div class="box">
+                        <div class="box-header">
+                            <h3 class="box-title text-light-blue">
+                                当前总用户数：<a class="text-black">{{ count }} </a>；
+                                其中管理员：<a class="text-black">{{ count_admin }}</a>
+                            </h3>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <table id="example1" class="table table-bordered table-hover table-striped">
+                                <thead>
+                                <tr>
+                                    <th>用户名</th>
+                                    <th>姓名</th>
+                                    <th>电话</th>
+                                    <th>是否为管理员</th>
+                                    <th>用户设置</th>
+                                    <th>输机</th>
+                                    <th>复查</th>
+                                    <th>查看输机/复查人</th>
+                                    <th>注册时间</th>
+                                    <th>编辑</th>
+                                    <th>删除</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for v in users %}
+                                    <tr>
+                                        <td>{{ v.username }}</td>
+                                        <td>{{ v.name }}</td>
+                                        <td>{{ v.phone }}</td>
+                                        <td>{% if v.is_admin == '1' %}<i class="fa fa-check"></i>
+                                            {% else %}<i class="fa fa-circle-o"></i>{% endif %}
+                                        </td>
+                                        <td>{% if v.can_add == '1' %}<i class="fa fa-check"></i>
+                                            {% else %}<i class="fa fa-circle-o"></i>{% endif %}</td>
+                                        <td>{% if v.is_input == '1' %}<i class="fa fa-check"></i>
+                                            {% else %}<i class="fa fa-circle-o"></i>{% endif %}</td>
+                                        <td>{% if v.is_check == '1' %}<i class="fa fa-check"></i>
+                                            {% else %}<i class="fa fa-circle-o"></i>{% endif %}</td>
+                                        <td>{% if v.view_log == '1' %}<i class="fa fa-check"></i>
+                                            {% else %}<i class="fa fa-circle-o"></i>{% endif %}</td>
+                                        <td>{{ v.add_time }}</td>
+                                        <td><a href="{{ url_for('user_detail', uid=v.id) }}"
+                                               data-toggle="tooltip" data-original-title="Edit">
+                                            <i class="fa fa-pencil text-inverse m-r-10"></i>
+                                        </a>
+                                        </td>
+                                        <td><a href="{{ url_for('user_del', udid=v.id) }}"
+                                               data-toggle="tooltip" data-original-title="Delete"
+                                               onclick="{if(confirm('确认删除？')){this.document.formname.submit();
+                                                    return true;}return false;}">
+                                            <i class="fa fa-close text-danger"></i>
+                                        </a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                    <!-- /.box -->
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    {% else %}<script>location.href='{{ url_for('forbidden') }}';</script>{% endif %}
+
+{% endblock %}
+{% block js %}
+    <!-- DataTables -->
+    <!-- 修改js中的文字或内容在jquery.dataTables.min.js中 -->
+    <script src="{{ url_for('static', filename='adminLTE/bower_components/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='adminLTE/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js') }}"></script>
+    <script>
+        $(function () {
+            $('#example1').DataTable()
+            $('#example2').DataTable({
+                'paging': true,
+                'lengthChange': false,
+                'searching': false,
+                'ordering': true,
+                'info': true,
+                'autoWidth': false
+            })
+        })
+    </script>
+{% endblock %}
