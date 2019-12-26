@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2952585a-ef51-4d47-a5bc-da71cfe08b09" name="默认更改列表" comment="" />
+    <list default="true" id="2952585a-ef51-4d47-a5bc-da71cfe08b09" name="默认更改列表" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -16,14 +20,18 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/static/login-static/css/popup-box.css" root0="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/static/adminLTE/dist/js/demo.js" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/templates/studentinfo-all.html" root0="SKIP_INSPECTION" root1="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/app.py" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/templates/basic.html" root0="FORCE_HIGHLIGHTING" root1="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/app.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/templates/studentinfo-all.html" root0="SKIP_INSPECTION" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/static/login-static/css/popup-box.css" root0="SKIP_INSPECTION" />
   </component>
   <component name="ProjectId" id="1TdJEKgAttPjTswONQ3tqZomo4L" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
@@ -31,6 +39,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/static" />
     <property name="settings.editor.selected.configurable" value="preferences.sourceCode" />
@@ -161,6 +170,9 @@
       <workItem from="1576457824155" duration="14892000" />
       <workItem from="1576544848204" duration="10844000" />
       <workItem from="1576633145714" duration="4871000" />
+      <workItem from="1577325051519" duration="8603000" />
+      <workItem from="1577345538059" duration="4222000" />
+      <workItem from="1577349977648" duration="843000" />
     </task>
     <servers />
   </component>
@@ -180,22 +192,22 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="223" y="67" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824@0.0.1536.824" timestamp="1575617482897" />
-    <state width="1537" height="122" key="GridCell.Tab.0.bottom" timestamp="1576576897474">
+    <state width="1537" height="157" key="GridCell.Tab.0.bottom" timestamp="1577344411952">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1537" height="122" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1576576897474" />
-    <state width="1537" height="122" key="GridCell.Tab.0.center" timestamp="1576576897474">
+    <state width="1537" height="157" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1577344411952" />
+    <state width="1537" height="157" key="GridCell.Tab.0.center" timestamp="1577344411952">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1537" height="122" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1576576897474" />
-    <state width="1537" height="122" key="GridCell.Tab.0.left" timestamp="1576576897473">
+    <state width="1537" height="157" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1577344411952" />
+    <state width="1537" height="157" key="GridCell.Tab.0.left" timestamp="1577344411951">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1537" height="122" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1576576897473" />
-    <state width="1537" height="122" key="GridCell.Tab.0.right" timestamp="1576576897474">
+    <state width="1537" height="157" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1577344411951" />
+    <state width="1537" height="157" key="GridCell.Tab.0.right" timestamp="1577344411952">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1537" height="122" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1576576897474" />
+    <state width="1537" height="157" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1577344411952" />
     <state x="270" y="54" key="SettingsEditor" timestamp="1575878239685">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -231,7 +243,7 @@
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/thesis$thesis.coverage" NAME="thesis Coverage Results" MODIFIED="1576547065397" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/thesis$thesis.coverage" NAME="thesis Coverage Results" MODIFIED="1577325527113" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/thesis$Unittests_in_test_app_py.coverage" NAME="Unittests in test_app.py Coverage Results" MODIFIED="1575597927778" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/static/adminLTE/bower_components/jvectormap/tests" />
     <SUITE FILE_PATH="coverage/thesis$sort.coverage" NAME="sort Coverage Results" MODIFIED="1575876907349" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>

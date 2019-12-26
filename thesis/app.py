@@ -586,7 +586,7 @@ def log_list():
 @checking_login
 def log_del():
     """
-    专业列表批量删除
+    日志列表批量删除
     """
     if request.method == 'POST':
         log_ids = request.form.getlist("ldid")  # log_ids是从表单获取的一个列表
