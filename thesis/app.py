@@ -35,6 +35,13 @@ def addlog(reason):
     )
     db.session.add(log)
     db.session.commit()
+    info = (
+        # 用户访问的信息
+        str.upper(request.user_agent.platform),
+        str.upper(request.user_agent.browser),
+        str.upper(request.user_agent.version)
+    )
+    print(info)
 
 
 @app.route('/index')
@@ -332,7 +339,7 @@ def mission_self():
 @checking_login
 def studentinfo_list():
     """查询到的学生信息列表"""
-    mis = Mission.query.order_by(Mission.id.asc()).all()
+    mis = [i.user for i in Mission.query.all()]
     keywords = request.form.get('keywords', type=str)
     data = StudentInfo.query.filter(
         or_(StudentInfo.examinee_number.like("%" + keywords + "%"),
@@ -425,11 +432,11 @@ def student_info(sid=None):
         import time
         import datetime
         if alter is not None:
-            addlog('alter:' + student.name + "、" + student.examinee_number)
+            addlog('alter:' + student.name + ":" + student.examinee_number)
             student.input = session['name']
             student.input_time = time.strftime('%Y-%m-%d %H:%M:%S')
         elif check is not None:
-            addlog("check:" + student.name + "、" + student.examinee_number)
+            addlog("check:" + student.name + ":" + student.examinee_number)
             student.checker = session['name']
             student.check_time = datetime.datetime.now()
         db.session.add(student)
@@ -507,14 +514,15 @@ def student_all():
     # 判断获取方式get与post，如果是get方法，返回所有学生的数据
     if request.method == 'GET':
         student = StudentInfo.query.order_by(StudentInfo.id.asc()).all()  # 直接数据库获取所有学生，返回到页面模板
-        return render_template('studentinfo-all.html', student=student, count_all=count, pro=province, major=major,
-                               dirc=direction, majorlist=majorlist)
+        return render_template('studentinfo-all.html', student=student, count_all=count, pro=province,
+                               major=major, dirc=direction, majorlist=majorlist)
+
     else:
         # 否则就获取筛选表数据
         status = request.form.get('screen-status')  # 在库状态
         province_post = request.form.get('screen-province')  # 省份
         major = request.form.get('screen-major')  # 专业
-        print(status, type(status), major, type(major))
+        # print(status, type(status), major, type(major))
         # 判断筛选项
         if province_post is not None:  # 如果选择了省份，则有4种情况，不考虑三个条件全选有三种
             if major and status is None:  # 只选择了省份的情况
@@ -523,8 +531,6 @@ def student_all():
                         Province.name == province_post
                     ).first().id
                 ).all()
-                return render_template("studentinfo-all.html", pro=province, student=student, count=len(student),
-                                       count_all=count, major=major, direction=direction, majorlist=majorlist)
             elif major is not None and status is None:  # 选择了省份和专业的情况
                 student = StudentInfo.query.filter(
                     or_(
@@ -536,12 +542,10 @@ def student_all():
                         ).first().id
                     )
                 ).all()
-                return render_template("studentinfo-all.html", pro=province, student=student, count=len(student),
-                                       count_all=count, major=major, direction=direction, majorlist=majorlist)
             else:  # 在库状态不为空
                 student = [1, 2]
-                return render_template("studentinfo-all.html", pro=province, student=student, count=len(student),
-                                       count_all=count, major=major, direction=direction, majorlist=majorlist)
+            return render_template("studentinfo-all.html", pro=province, student=student, count=len(student),
+                                   count_all=count, major=major, direction=direction, majorlist=majorlist)
         else:
             return redirect(url_for('student_all'))
 
@@ -550,7 +554,7 @@ def student_all():
 @checking_login
 def major_list():
     """专业列表"""
-    major = MajorList.query.order_by(MajorList.code_majorlist.aszc()).all()
+    major = MajorList.query.order_by(MajorList.code_majorlist.asc()).all()
     return render_template("major-list.html", major=major)
 
 
@@ -559,7 +563,7 @@ def major_list():
 def major_del():
     """专业列表批量删除"""
     if request.method == 'POST':
-        major_ids = request.form.getlist("delid")  # cat_ids 是一个列表
+        major_ids = request.form.getlist("delid")  # major_ids 是一个列表
         # 如果没有专业可以删除。或者未删除任何专业
         if not major_ids:
             flash('未选择专业或者没有可以删除的专业！')
@@ -625,7 +629,7 @@ def import_excel():
                 for lm in list_major:  # for循环来遍历list中的每一项
                     major = MajorList(code_majorlist=lm[0], name_majorlist=lm[1])
                     db.session.add(major)  # 在for循环中添加到数据库，每循环一次添加一次，但不提交
-                db.session.commit()  # 所有事务一次提交到数据库
+                db.session.commit()  # 一次提交所有事务
                 addlog('导入专业列表 :' + file.filename)  # 增加日志
                 flash('专业导入成功！导入路径：%s' % filepath)
         elif student is not None:
@@ -639,7 +643,7 @@ def import_excel():
                     file,
                     usecols=[0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 16, 17, 18, 19, 20, 21, 24, 25],
                     names=None
-                ).values.tolist()  # 选择性读取excel文件中的某一些列作为一个新列表
+                ).values.tolist()  # 有选择性地读取excel文件中的某一部分列作为一个新列表
                 for ls in list_student:
                     import datetime
                     studentinfo = StudentInfo(
