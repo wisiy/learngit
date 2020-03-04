@@ -188,7 +188,7 @@
                     </a>
                 </li>
                 <li {% block batch_delete %}{% endblock %}>
-                    <a href="#">
+                    <a href="{{ url_for('batch_delete') }}">
                         <i class="fa fa-exclamation-triangle"></i> <span>批量删除</span>
                         <span class="pull-right-container"></span>
                     </a>

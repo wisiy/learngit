@@ -1,15 +1,21 @@
 from datetime import timedelta
-from functools import wraps
-from stu_forms import StudentForm
-from flask import Flask, render_template, redirect, request, url_for, flash, session, jsonify
-from sqlalchemy import or_
 from decimal import *
+from functools import wraps
+
+from flask import make_response
+from flask import Flask, render_template, redirect, request, url_for, flash, session, jsonify
+from flask_moment import Moment
+from sqlalchemy import or_, and_
+
 import config
+from formlist import AddForm
 from models import db, User, StudentInfo, Province, Mission, Log, MajorDirection, Major, MajorList
+from stu_forms import StudentForm
 
 app = Flask(__name__, static_url_path='')
 app.config.from_object(config)
 db.init_app(app)
+moment = Moment(app)
 
 
 def checking_login(f):
@@ -57,13 +63,37 @@ def index():
     """
     主页，计算数据量
     """
+    import time, datetime
     user = User.query.count()
     student = StudentInfo.query.count()
-    return render_template('index.html', total_user=user, total_student=student)
+    # inputer = [i.input for i in StudentInfo.query.order_by(StudentInfo.id.asc()).all()]  # 将所有输机人提取转化为列表
+    # stay_input = list(filter(None, inputer))  # 去除没有输机人的项（去除None值）为已输机的学生
+    # checker = [c.checker for c in StudentInfo.query.order_by(StudentInfo.id.asc()).all()]  # 将所有复查人提取转化为列表
+    # stay_check = list(filter(None, checker))
+    stay_input = StudentInfo.query.filter(
+        and_(StudentInfo.input == None, StudentInfo.checker == None)
+    ).count()  # 待输机人数
+    stay_check = StudentInfo.query.filter(
+        and_(StudentInfo.input != None, StudentInfo.checker == None)
+    ).count()  # 待复查人数
+    input_all = StudentInfo.query.filter(StudentInfo.input_time).all()  # 查询所有输机日期
+    now_date = time.strftime("%Y-%m-%d")  # 获取当前日期
+    yesterday_date = (datetime.datetime.today() + timedelta(-1)).strftime("%Y-%m-%d")  # 查询昨天的日期
+    today = 0  # 初始化
+    yesterday = 0  # 初始化
+    for i in input_all:
+        if str(i.input_time)[0:10] == str(now_date):
+            today += 1  # 累加计算今日输机量
+        if str(i.input_time)[0:10] == str(yesterday_date):
+            yesterday += 1  # 累加计算昨日输机量
+    return render_template('index.html', today=today, yesterday=yesterday,
+                           total_user=user, total_student=student,
+                           stay_input=stay_input, stay_check=stay_check)
 
 
 @app.route('/new/user/register/', methods=['POST'])
 def register():
+    """注册新用户，但新用户注册无任何权限"""
     if request.method == 'POST':
         name = request.form.get('name')
         username = request.form.get('username')
@@ -142,19 +172,23 @@ def reset_password():
         user = User.query.filter_by(username=session["username"]).first()
         if ori_pass != user.password:
             flash('原密码不正确！')
-            return redirect(url_for("reset_password"))
+            # return redirect(url_for("reset_password"))
         elif new_pass != confirm:
-            flash('两次输入的密码不一致')
-            return redirect(url_for("reset_password"))
+            flash('原密码与确认密码不一致')
+            # return redirect(url_for("reset_password"))
         elif new_pass == ori_pass:
             flash('新旧密码不能一样')
-            return redirect(url_for("reset_password"))
+            # return redirect(url_for("reset_password"))
         else:
             user.password = new_pass
             db.session.add(user)
             db.session.commit()
             session.clear()
-            return "<script>alert('密码修改成功');location.href='/login/';</script>"
+            response = make_response(
+                "<script>alert('密码修改成功');location.href='/login/';</script>"
+            )
+            return response
+        return redirect(url_for("reset_password"))
 
 
 @app.route('/new/user/', methods=['GET', 'POST'])
@@ -191,7 +225,10 @@ def new_user():
                             can_add=add_user, is_check=check, is_input=can_input, view_log=log)
                 db.session.add(user)
                 db.session.commit()
-                return "<script>alert('添加成功！');location.href='/new/user/';</script>"
+                response = make_response(
+                    "<script>alert('添加成功！');location.href='/new/user/';</script>"
+                )
+                return response
 
 
 @app.route('/user/list/')
@@ -221,12 +258,18 @@ def user_detail(uid=None):
         user.is_input = request.form.get('input')
         user.is_check = request.form.get('check')
         user.view_log = request.form.get('log')
-        user.username = request.form.get('username')
         user.name = request.form.get('name')
         user.phone = request.form.get('phone')
-        db.session.add(user)
-        db.session.commit()
-        return render_template("user-detail.html", user=user)
+        u = request.form.get('username')
+        if User.query.filter(User.username == u).first():
+            flash('用户名已存在!')
+            return render_template("user-detail.html", user=user)
+        else:
+            user.username = u
+            db.session.add(user)
+            db.session.commit()
+            flash('修改成功！')
+            return render_template("user-detail.html", user=user)
 
 
 @app.route('/user/del/<int:udid>')
@@ -262,8 +305,15 @@ def set_mission():
         quantity = request.form.get('quantity')
         begin_time = time.strftime('%Y-%m-%d %H:%M:%S')
         # 从所有学生信息中检索input和任务完成人进行比对，该任务被删除时，下次任务数量不为0，输机与复查完成量问题
-        completed = StudentInfo.query.filter(StudentInfo.input == Mission.user).count()
-        mission = Mission(user=user, province=province, major=major, type=op_type, quantity=quantity,
+        completed = 0
+        # if op_type == "输机(有库)":
+        #     completed = StudentInfo.query.filter(and_(
+        #         StudentInfo.input == Mission.user, begin_time < StudentInfo.input_time)
+        #     ).count()
+        #     print(completed)
+        # completed = StudentInfo.query.filter(StudentInfo.input == Mission.user).count()
+        mission = Mission(user=user, province=province, major=major,
+                          type=op_type, quantity=quantity,
                           begin_time=begin_time, completed=completed)
         db.session.add(mission)
         db.session.commit()
@@ -328,6 +378,17 @@ def mission_self():
     用户自己的任务
     """
     mission = Mission.query.filter(Mission.user == session['name']).all()
+    for tp in mission:
+        if tp.type == "输机(有库)":
+            completed = StudentInfo.query.filter(and_(
+                StudentInfo.input == Mission.user,
+                tp.begin_time < StudentInfo.input_time,
+                # StudentInfo.province_id == tp.province
+            )).count()
+            print(completed)
+            tp.completed = completed
+            db.session.add(tp)
+            db.session.commit()
     if mission is None:
         flash('用户当前没有任务！')
         return render_template('mission-self.html', mis=mission)
@@ -346,7 +407,7 @@ def studentinfo_list():
             StudentInfo.name.like("%" + keywords + "%"),
             StudentInfo.registration_number.like("%" + keywords + "%"),
             StudentInfo.id_number.like("%" + keywords + "%"),
-            StudentInfo.id.like("%" + keywords + "%"))
+            StudentInfo.id == keywords)
     ).order_by(StudentInfo.add_time.desc()).all()
     count = len(data)
     return render_template("studentinfo-list.html", data=data, count=count, mis=mis)
@@ -432,11 +493,11 @@ def student_info(sid=None):
         import time
         import datetime
         if alter is not None:
-            addlog('alter:' + student.name + ":" + student.examinee_number)
+            addlog('修改:' + student.name + "(ID:" + str(sid) + "):" + student.examinee_number)
             student.input = session['name']
             student.input_time = time.strftime('%Y-%m-%d %H:%M:%S')
         elif check is not None:
-            addlog("check:" + student.name + ":" + student.examinee_number)
+            addlog("复查:" + student.name + "(ID:" + str(sid) + "):" + student.examinee_number)
             student.checker = session['name']
             student.check_time = datetime.datetime.now()
         db.session.add(student)
@@ -450,7 +511,7 @@ def student_info(sid=None):
 def alter_clear(acdid=None):
     """
     清除输机信息
-    acdid: alter clear delete id
+    acdid: alter clean delete id
     """
     import time
     student = StudentInfo.query.get_or_404(acdid)
@@ -467,7 +528,7 @@ def alter_clear(acdid=None):
 def check_clear(ccdid=None):
     """
     清除复查信息
-    ccdid: checker clear delete id
+    ccdid: checker clean delete id
     """
     import time
     student = StudentInfo.query.get_or_404(ccdid)
@@ -519,29 +580,44 @@ def student_all():
 
     else:
         # 否则就获取筛选表数据
-        status = request.form.get('screen-status')  # 在库状态
-        province_post = request.form.get('screen-province')  # 省份
-        major = request.form.get('screen-major')  # 专业
+        s = request.form.get('screen-status')  # 在库状态 status
+        p = request.form.get('screen-province')  # 省份 province
+        m = request.form.get('screen-major')  # 专业 major
         # print(status, type(status), major, type(major))
         # 判断筛选项
-        if province_post is not None:  # 如果选择了省份，则有4种情况，不考虑三个条件全选有三种
-            if major and status is None:  # 只选择了省份的情况
+        if p is not None:  # 如果选择了省份，则有4种情况，不考虑三个条件全选有三种
+            if m and s is None:  # 只选择了省份的情况
                 student = StudentInfo.query.filter(
                     StudentInfo.province_id == Province.query.filter(
-                        Province.name == province_post
+                        Province.name == p
                     ).first().id
                 ).all()
-            elif major is not None and status is None:  # 选择了省份和专业的情况
+            elif m is not None and s is None:  # 选择了省份和专业的情况
                 student = StudentInfo.query.filter(
-                    or_(
-                        StudentInfo.major_id == Major.query.filter(
-                            Major.name_major.like("%" + major + "%")
-                        ).first().id,
-                        StudentInfo.major_direction_id == MajorDirection.query.filter(
-                            MajorDirection.name_direction.like("%" + major + "%")
-                        ).first().id
+                    and_(
+                        or_(
+                            StudentInfo.major_id == Major.query.filter(
+                                Major.name_major.like("%" + m + "%")
+                            ).first().id,
+                            StudentInfo.major_direction_id == MajorDirection.query.filter(
+                                MajorDirection.name_direction.like("%" + m + "%")
+                            ).first().id
+                        ),
+                        StudentInfo.query.filter(
+                            StudentInfo.province_id == Province.query.filter(
+                                Province.name == p
+                            ).first().id
+                        )
                     )
                 ).all()
+            elif m is None and s is not None:
+                student = StudentInfo.query.filter(
+                    and_(
+                        StudentInfo.province_id == Province.query.filter(
+                            province.name == p
+                        ).first().id,
+                    )
+                )
             else:  # 在库状态不为空
                 student = [1, 2]
             return render_template("studentinfo-all.html", pro=province, student=student, count=len(student),
@@ -563,7 +639,7 @@ def major_list():
 def major_del():
     """专业列表批量删除"""
     if request.method == 'POST':
-        major_ids = request.form.getlist("delid")  # major_ids 是一个列表
+        major_ids = request.form.getlist("delid")  # major_ids 列表
         # 如果没有专业可以删除。或者未删除任何专业
         if not major_ids:
             flash('未选择专业或者没有可以删除的专业！')
@@ -596,7 +672,7 @@ def log_del():
         log_ids = request.form.getlist("ldid")  # log_ids是从表单获取的一个列表
         # 如果没有日志可以删除。或者未选择任何日志
         if not log_ids:
-            flash('未选择或者没有可以删除的！')
+            flash('未选择或者没有可以删除的项目！')
         else:
             # 使用in_ 方式批量删除，需要设置synchronize_session为False
             db.session.query(Log).filter(Log.id.in_(log_ids)).delete(synchronize_session=False)
@@ -673,13 +749,31 @@ def import_excel():
                     db.session.add(studentinfo)
                 db.session.commit()
                 addlog('导入学生信息：%s' % file.filename)  # 增加日志
-                flash('学生信息导入成功！路径：%s' % filepath)
+                flash('学生信息导入成功！所选路径：%s' % filepath)
         return render_template("import-excel.html")
 
 
-@app.route('/500')
-def err():
-    return render_template("500.html")
+@app.route('/student/information/batches/delete/', methods=['GET', 'POST'])
+def batch_delete():
+    form = AddForm()
+    if form.submit.data:
+        form.item_list.append_entry()
+    elif form.item_list:
+        for item in form.item_list:
+            if item.form.delete.data:
+                form.item_list.entries.remove(item)
+                break
+    return render_template('batch-delete.html', form=form)
+
+
+# from flask import make_response
+
+
+# @app.route('/500')
+# def err():
+#     response = make_response('<h1>This document carries a cookie!</h1>')
+#     response.set_cookie('answer', '42')
+#     return  response
 
 
 @app.route('/permission/denied/403/')
@@ -692,6 +786,11 @@ def forbidden():
 def page_not_found(error):
     """访问到未注册的路由时返回404"""
     return render_template('404.html'), 404
+
+
+@app.errorhandler(500)
+def internal_server_error(e):
+    return render_template('500.html'), 500
 
 
 if __name__ == '__main__':

@@ -33,7 +33,7 @@
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/static" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="settings.editor.selected.configurable" value="Errors" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -169,6 +169,26 @@
       <workItem from="1577254159203" duration="1289000" />
       <workItem from="1577427748747" duration="4000" />
       <workItem from="1577430103573" duration="6619000" />
+      <workItem from="1577668468228" duration="12076000" />
+      <workItem from="1577755211264" duration="19919000" />
+      <workItem from="1577929662059" duration="6391000" />
+      <workItem from="1577947045800" duration="254000" />
+      <workItem from="1577947382492" duration="6805000" />
+      <workItem from="1578012782349" duration="13926000" />
+      <workItem from="1578362697220" duration="941000" />
+      <workItem from="1578364811332" duration="2996000" />
+      <workItem from="1578382363918" duration="2341000" />
+      <workItem from="1578452367219" duration="11073000" />
+      <workItem from="1578534459410" duration="7036000" />
+      <workItem from="1578619477073" duration="15250000" />
+      <workItem from="1578883704541" duration="1277000" />
+      <workItem from="1578971239203" duration="7750000" />
+      <workItem from="1579069385124" duration="7207000" />
+      <workItem from="1579774391790" duration="21000" />
+      <workItem from="1581690425409" duration="888000" />
+      <workItem from="1581909283954" duration="600000" />
+      <workItem from="1583161863317" duration="4368000" />
+      <workItem from="1583231891906" duration="18645000" />
     </task>
     <servers />
   </component>
@@ -176,6 +196,10 @@
     <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="361" y="71" key="#Inspections" timestamp="1578620053971">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="361" y="71" key="#Inspections/0.0.1536.824@0.0.1536.824" timestamp="1578620053970" />
     <state x="361" y="71" key="#Notifications" timestamp="1575343073555">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -184,38 +208,62 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="361" y="71" key="#Python/0.0.1536.824@0.0.1536.824" timestamp="1576224428980" />
-    <state x="223" y="67" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1575617482897">
+    <state x="223" y="67" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1577699705752">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="223" y="67" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824@0.0.1536.824" timestamp="1575617482897" />
-    <state x="549" y="153" key="FileChooserDialogImpl" timestamp="1577063707538">
+    <state x="223" y="67" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824@0.0.1536.824" timestamp="1577699705752" />
+    <state x="449" y="139" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1578552508587">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="549" y="153" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1577063707538" />
-    <state width="1537" height="153" key="GridCell.Tab.0.bottom" timestamp="1577435156499">
+    <state x="449" y="139" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.0.1536.824@0.0.1536.824" timestamp="1578552508587" />
+    <state x="361" y="71" key="#更新" timestamp="1578552507493">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1537" height="153" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1577435156499" />
-    <state width="1537" height="153" key="GridCell.Tab.0.center" timestamp="1577435156499">
+    <state x="361" y="71" key="#更新/0.0.1536.824@0.0.1536.824" timestamp="1578552507493" />
+    <state x="549" y="153" key="FileChooserDialogImpl" timestamp="1579774409024">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1537" height="153" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1577435156499" />
-    <state width="1537" height="153" key="GridCell.Tab.0.left" timestamp="1577435156498">
+    <state x="549" y="153" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1579774409024" />
+    <state width="1537" height="210" key="GridCell.Tab.0.bottom" timestamp="1583317027443">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1537" height="153" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1577435156498" />
-    <state width="1537" height="153" key="GridCell.Tab.0.right" timestamp="1577435156499">
+    <state width="1537" height="210" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1583317027443" />
+    <state width="1537" height="210" key="GridCell.Tab.0.center" timestamp="1583317027441">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1537" height="153" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1577435156499" />
-    <state x="270" y="54" key="SettingsEditor" timestamp="1577236589491">
+    <state width="1537" height="210" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1583317027441" />
+    <state width="1537" height="210" key="GridCell.Tab.0.left" timestamp="1583317027440">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="270" y="54" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1577236589491" />
-    <state x="425" y="66" width="672" height="676" key="search.everywhere.popup" timestamp="1576217084391">
+    <state width="1537" height="210" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1583317027440" />
+    <state width="1537" height="210" key="GridCell.Tab.0.right" timestamp="1583317027442">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="425" y="66" width="672" height="676" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1576217084391" />
+    <state width="1537" height="210" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1583317027442" />
+    <state width="1537" height="210" key="GridCell.Tab.1.bottom" timestamp="1583317027446">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1537" height="210" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1583317027446" />
+    <state width="1537" height="210" key="GridCell.Tab.1.center" timestamp="1583317027445">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1537" height="210" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1583317027445" />
+    <state width="1537" height="210" key="GridCell.Tab.1.left" timestamp="1583317027445">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1537" height="210" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1583317027445" />
+    <state width="1537" height="210" key="GridCell.Tab.1.right" timestamp="1583317027446">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1537" height="210" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1583317027446" />
+    <state x="270" y="54" key="SettingsEditor" timestamp="1583234938479">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="270" y="54" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1583234938479" />
+    <state x="425" y="66" width="672" height="676" key="search.everywhere.popup" timestamp="1583164984706">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="425" y="66" width="672" height="676" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1583164984706" />
     <state x="491" y="324" key="vcs.readOnlyHandler.ReadOnlyStatusDialog" timestamp="1575858145292">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -238,7 +286,7 @@
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/thesis$thesis.coverage" NAME="thesis Coverage Results" MODIFIED="1577430787202" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/thesis$thesis.coverage" NAME="thesis Coverage Results" MODIFIED="1583304444482" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/thesis$Unittests_in_test_app_py.coverage" NAME="Unittests in test_app.py Coverage Results" MODIFIED="1575597927778" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/static/adminLTE/bower_components/jvectormap/tests" />
     <SUITE FILE_PATH="coverage/thesis$sort.coverage" NAME="sort Coverage Results" MODIFIED="1575876907349" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>

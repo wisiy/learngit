@@ -93,6 +93,8 @@
                                     <th>专业</th>
                                     <th>得分</th>
                                     <th>状态</th>
+                                    <th>输机</th>
+                                    <th>复查</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -127,6 +129,8 @@
                                                 已完成
                                             {% endif %}
                                         </td>
+                                        <td>{% if s.input==none %}{% else %}{{ s.input }}{% endif %}</td>
+                                        <td>{% if s.checker==none %}{% else %}{{ s.checker }}{% endif %}</td>
                                     </tr>
                                 {% endfor %}
                                 </tbody>
@@ -230,14 +234,14 @@
             })
 
             //Colorpicker
-            $('.my-colorpicker1').colorpicker();
+            //$('.my-colorpicker1').colorpicker();
             //color picker with addon
-            $('.my-colorpicker2').colorpicker();
+            //$('.my-colorpicker2').colorpicker();
 
             //Timepicker
-            $('.timepicker').timepicker({
-                showInputs: false
-            })
+            //$('.timepicker').timepicker({
+               // showInputs: false
+            //})
         })
     </script>
     <!-- bootstrap color picker -->

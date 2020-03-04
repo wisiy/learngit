@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='adminLTE/bower_components/select2/dist/css/select2.min.css') }}">
     <!-- Bootstrap Color Picker -->
     <link rel="stylesheet"
-      href="{{ url_for('static', filename='adminLTE/bower_components/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css') }}">
+          href="{{ url_for('static', filename='adminLTE/bower_components/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css') }}">
     <!-- Bootstrap time Picker -->
     <link rel="stylesheet" href="{{ url_for('static', filename='adminLTE/plugins/timepicker/bootstrap-timepicker.min.css') }}">
 {% endblock %}
@@ -43,24 +43,23 @@
                         <!-- form start -->
                         <form role="form" method="post" action="">
                             <div class="box-body">
-
                                 <div class="form-group">
                                     <label for="name">真实姓名</label>
                                     <input type="text" class="form-control" placeholder="Real name..." id="name"
                                            name="name" required oninvalid="setCustomValidity('请填写真实姓名。')"
-                                           oninput="setCustomValidity('')" value="{{ user.name }}" >
+                                           oninput="setCustomValidity('')" value="{{ user.name }}">
                                 </div>
                                 <div class="form-group">
                                     <label for="phone">电话</label>
                                     <input type="tel" class="form-control" placeholder="Phone..." id="phone"
                                            name="phone" required oninvalid="setCustomValidity('请填写电话。')"
-                                           oninput="setCustomValidity('')" value="{{ user.phone }}" >
+                                           oninput="setCustomValidity('')" value="{{ user.phone }}">
                                 </div>
                                 <div class="form-group">
                                     <label for="new-user">用户名</label>
                                     <input type="text" class="form-control" placeholder="Username..." id="new-user"
                                            name="username" required oninvalid="setCustomValidity('请填写用户名。')"
-                                           oninput="setCustomValidity('')" value="{{ user.username }}" >
+                                           oninput="setCustomValidity('')" value="{{ user.username }}">
                                 </div>
                                 <div class="form-group">
                                     <label for="new-password">密码 <small>(此处不提供修改)</small></label>
@@ -88,6 +87,8 @@
                             <!-- /.box-body -->
                             <div class="box-footer">
                                 <button type="submit" class="btn btn-primary">提交</button>
+                                <a class="control-label text-red" style="font-weight: bold;">
+                                    {% for msg in get_flashed_messages() %}{{ msg }}{% endfor %}</a>
                                 <a type="button" class="btn btn-info pull-right"
                                    href="{{ url_for('user_list') }}">取消</a>
                             </div>
